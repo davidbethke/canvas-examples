@@ -18,9 +18,20 @@
 	}
 
 	function mouseOver(ev){
+		var activeLayer='layer1';
+		//setup canvas
+		var theCanvas=document.getElementById('layer1');
+		var context=theCanvas.getContext('2d');
 		//MOUSE.setSmallXHairCursor('layer1');
 		MOUSE.setHiddenCursor('layer1');
-		document.getElementById('layer1').onmousemove = mouseMove;
+		document.getElementById('layer1').addEventListener('mousemove',function(ev){mouseMove(context,ev)},false);
+
+		//document.getElementById('layer1').onmousemove = mouseMove;
+		document.getElementById('layer1').onmousedown = mouseDown;
+
+		document.getElementById('layer').innerHTML= 'ScoringRings';
+		document.getElementById('mode').innerHTML= 'InsertMode';
+
 	}
 	
 	function mouseOut(ev){
@@ -28,23 +39,32 @@
 		document.getElementById('layer1').onmousemove = null;
 	
 	}
+	function mouseDown(ev){
+		ev=ev || window.event;
+		var mousePos=mouseCoords(ev);
+		document.getElementById('capturedClick').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
+		//drawHole();
+
+	}
 	
 	function canvasSupport(){
 		return Modernizr.canvas;
 	}
 
-	function mouseMove(ev){
+	function mouseMove(context,ev){
+		Debugger.log('MouseMove');
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
-		
+		//var context= this.context;
 		//setup canvas
-		var theCanvas=document.getElementById('layer1');
-		var context=theCanvas.getContext('2d');
+		//var theCanvas=document.getElementById('layer1');
+		//var context=theCanvas.getContext('2d');
+		
 		context.globalAlpha=1;
 		context.clearRect(0,0,500,300);
-		MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
-		//MOUSEcustom.setHoleCursor(context,mousePos.x,mousePos.y,500,300);
+		//MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
+		MOUSEcustom.setHoleCursor(context,mousePos.x,mousePos.y,500,300);
 
 	}
 	
@@ -64,16 +84,7 @@
 		function drawScreen(){
 			//background
 			Debugger.log('DrawingRects');
-			/*
-			context.fillStyle = '#ffffaa';
-			context.fillRect(0,0,500,300);
-			context.globalAlpha=1.0;
-			//text
-			context.fillStyle='#000000';
-			context.font-'20px _sans';
-			context.textBaseline='top';
-			context.fillText('Hello World!',195,80);
-			*/
+			
 			//image
 			var helloWorldImage = new Image();
 			helloWorldImage.src='../other/target1.jpg';
@@ -82,36 +93,11 @@
 				context.drawImage(helloWorldImage,100,10,500,300,0,0,500,300);
 
 				};
-				/*
-			//box
-			context.strokeStyle ='#000000';
-			context.strokeRect(5,5,490,290);
-			Debugger.log('DrawingShapes');
-			//draw some shapes
-			context.fillRect(100,100,20,50);
-			context.strokeRect(110,110,50,20);
-			//fill circle
-			context.beginPath();
-			context.strokeStyle='black';
-			context.lineWidth=5;
-			context.arc(200,200,60,(Math.PI/180)*0,(Math.PI/180)*360,false);
-			context.stroke();
-			context.closePath();
-			//draw horiz line
-			context.beginPath();
-			context.moveTo(250,150);
-			context.lineTo(250,300);
-			context.stroke();
-			context.closePath();
-			*/
 			
 		}
 		drawScreen();
-		
-		
 	}
-	//end canvas app
-	
+
 	// Try to set the mouse style for the id passed, css style set
 	var MOUSE= (function(id){
 		var my={};

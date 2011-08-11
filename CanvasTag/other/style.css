@@ -23,3 +23,9 @@
 		left:40px;
 		z-index:1;
 	}
+	#status{
+		position:absolute;
+		top:350px;
+		left:40px;
+		margin-top:float;
+	}
