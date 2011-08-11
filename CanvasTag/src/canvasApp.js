@@ -15,19 +15,19 @@
 		document.getElementById('layer1').onmouseover= mouseOver;
 		document.getElementById('layer1').onmouseout= mouseOut;
 		canvasApp();
-
-		
-
 	}
+
 	function mouseOver(ev){
-		MOUSE.setSmallXHairCursor('layer1');
+		//MOUSE.setSmallXHairCursor('layer1');
+		MOUSE.setHiddenCursor('layer1');
 		document.getElementById('layer1').onmousemove = mouseMove;
-	};
+	}
+	
 	function mouseOut(ev){
 		MOUSE.setDefaultCursor('layer1');
 		document.getElementById('layer1').onmousemove = null;
 	
-	};
+	}
 	
 	function canvasSupport(){
 		return Modernizr.canvas;
@@ -37,57 +37,19 @@
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
-		// try to create a large cursor composed of two lines, ie(mousePos.x,0),(mousePos.x,maxY)
-		//setup?
 		
-		var drawn=0;
-		//var lastImg= new Image();
 		//setup canvas
 		var theCanvas=document.getElementById('layer1');
 		var context=theCanvas.getContext('2d');
 		context.globalAlpha=1;
 		context.clearRect(0,0,500,300);
-		MOUSEcustom.setLargeXHairCursor(context,mousePos.x,mousePos.y,500,300);
+		MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
+		//MOUSEcustom.setHoleCursor(context,mousePos.x,mousePos.y,500,300);
 
-		//if(!drawn){
-		//lastImg.src=theCanvas.toDataURL('image/png');
-		//drawn=1;
-		//}
-		
-		Debugger.log('drawlastImg');
-		//lastImg.onload=function(){
-		//	context.drawImage(lastImg,0,0);
-		//};
-		/*
-		Debugger.log('drawingLineforMouse');
-		//context.save();
-		context.strokeStyle='black';
-		context.lineWidth=2;
-			context.beginPath();
-			
-			
-				context.moveTo(10,mousePos.y-50);
-				context.lineTo(500,mousePos.y-50);
-				context.stroke();
-
-				context.closePath();
-		
-			context.beginPath();
-				
-				context.moveTo(mousePos.x-50,0);
-				context.lineTo(mousePos.x-50,300);
-				
-				context.stroke();
-
-				
-			context.closePath();
-
-		*/
 	}
+	
 	function mouseCoords(ev){
-	
-			return {x:ev.pageX, y:ev.pageY};
-	
+		return {x:ev.pageX, y:ev.pageY};
 	}
 	
 	function canvasApp(){
@@ -102,6 +64,7 @@
 		function drawScreen(){
 			//background
 			Debugger.log('DrawingRects');
+			/*
 			context.fillStyle = '#ffffaa';
 			context.fillRect(0,0,500,300);
 			context.globalAlpha=1.0;
@@ -110,12 +73,16 @@
 			context.font-'20px _sans';
 			context.textBaseline='top';
 			context.fillText('Hello World!',195,80);
+			*/
 			//image
 			var helloWorldImage = new Image();
-			helloWorldImage.src='../other/ok.png';
+			helloWorldImage.src='../other/target1.jpg';
 			helloWorldImage.onload = function(){
-				context.drawImage(helloWorldImage,160,130);
+				//context.drawImage(helloWorldImage,0,0);
+				context.drawImage(helloWorldImage,100,10,500,300,0,0,500,300);
+
 				};
+				/*
 			//box
 			context.strokeStyle ='#000000';
 			context.strokeRect(5,5,490,290);
@@ -136,7 +103,7 @@
 			context.lineTo(250,300);
 			context.stroke();
 			context.closePath();
-			
+			*/
 			
 		}
 		drawScreen();
@@ -145,7 +112,7 @@
 	}
 	//end canvas app
 	
-	// Try to set the mouse style for the tag passed
+	// Try to set the mouse style for the id passed, css style set
 	var MOUSE= (function(id){
 		var my={};
 		my.setDefaultCursor=function(id){
@@ -157,13 +124,19 @@
 			document.getElementById(id).setAttribute('style', 'cursor:crosshair');
 			return;
 		};
+		my.setHiddenCursor=function(id){
+			document.getElementById(id).setAttribute('style', 'cursor:none');
+			return;
+		};
 		
 		return my;
 		
 	}());
+	
+	//custom cursor, drawn vs style
 	var MOUSEcustom =(function(context,x,y,xMax,yMax){
 		var my={};
-		my.setLargeXHairCursor=function(context,x,y,xMax,yMax){
+		my.setRingCursor=function(context,x,y,xMax,yMax){
 			Debugger.log('drawingLineforMouse');
 			//context.save();
 			context.strokeStyle='gray';
@@ -180,6 +153,43 @@
 					context.stroke();
 				context.closePath();
 				return;
+		};
+		my.setHoleCursor=function(context,x,y,xMax,yMax){
+			var offset=50;
+			var radius=7;
+			var length=7;
+			context.strokeStyle='red';
+			context.lineWidth=1;
+			context.beginPath();
+				context.arc(x-offset,y-offset,radius,(Math.PI/180)*0,(Math.PI/180)*360,false);
+				context.stroke();
+			context.closePath();
+			//left
+			context.beginPath();
+					context.moveTo(x-offset-radius-length,y-offset);
+					context.lineTo(x-offset-radius,y-offset);
+					context.stroke();
+			context.closePath();
+			//right
+			context.beginPath();
+					context.moveTo(x-offset+radius+length,y-offset);
+					context.lineTo(x-offset+radius,y-offset);
+					context.stroke();
+			context.closePath();
+			//top
+			context.beginPath();
+					context.moveTo(x-offset,y-offset-radius-length);
+					context.lineTo(x-offset,y-offset-radius);
+					context.stroke();
+			context.closePath();
+			//bottom
+			context.beginPath();
+					context.moveTo(x-offset,y-offset+radius);
+					context.lineTo(x-offset,y-offset+radius+length);
+					context.stroke();
+			context.closePath();
+			
+			
 		};
 		return my;
 	}());
