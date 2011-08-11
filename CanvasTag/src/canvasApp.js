@@ -1,6 +1,7 @@
 	
 
 	window.addEventListener('load', eventWindowLoaded,false);
+	//log events
 	var Debugger = function(){};
 	Debugger.log= function(message){
 		try{
@@ -10,11 +11,27 @@
 			return;
 		}
 	};
+	//cursor types enums
+	var CursorType = {'holes':1,'rings':2};
+	//Object.freeze(CursorType);
+	
 	function eventWindowLoaded(){
 	
 		document.getElementById('layer1').onmouseover= mouseOver;
 		document.getElementById('layer1').onmouseout= mouseOut;
+		document.getElementById('layer').onclick= layerClick;
 		canvasApp();
+	}
+	function layerClick(){
+		value=document.getElementById('layer').value;
+		if (value == 'rings'){
+			document.getElementById('layer').value='holes';
+			document.getElementById('layer').innerHTML='BulletHoles';
+		}
+		else{
+			document.getElementById('layer').value='rings';
+			document.getElementById('layer').innerHTML='ScoringRings';
+		}
 	}
 
 	function mouseOver(ev){
@@ -22,9 +39,17 @@
 		//setup canvas
 		var theCanvas=document.getElementById('layer1');
 		var context=theCanvas.getContext('2d');
+		var layer= document.getElementById('layer').value;
+		var cursorType;
+		if(layer == 'holes'){
+			cursorType=CursorType.holes;
+		}
+		else{
+			cursorType=CursorType.rings;
+		}
 		//MOUSE.setSmallXHairCursor('layer1');
 		MOUSE.setHiddenCursor('layer1');
-		document.getElementById('layer1').addEventListener('mousemove',function(ev){mouseMove(context,ev)},false);
+		document.getElementById('layer1').addEventListener('mousemove',function(ev){mouseMove(context,cursorType,ev)},false);
 
 		//document.getElementById('layer1').onmousemove = mouseMove;
 		document.getElementById('layer1').onmousedown = mouseDown;
@@ -51,7 +76,7 @@
 		return Modernizr.canvas;
 	}
 
-	function mouseMove(context,ev){
+	function mouseMove(context,cursorType,ev){
 		Debugger.log('MouseMove');
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
@@ -63,8 +88,13 @@
 		
 		context.globalAlpha=1;
 		context.clearRect(0,0,500,300);
-		//MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
-		MOUSEcustom.setHoleCursor(context,mousePos.x,mousePos.y,500,300);
+		if(cursorType == CursorType.holes){
+			//MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
+			MOUSEcustom.setHoleCursor(context,mousePos.x,mousePos.y,500,300);
+		}
+		else{
+			MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
+		}
 
 	}
 	
