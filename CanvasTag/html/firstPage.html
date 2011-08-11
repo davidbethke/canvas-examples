@@ -15,29 +15,39 @@
 	}
 	div{
 		background-color:green;
+		position:relative;
 	}
-	#col{
-		background-color:red;
-		margin-right:0px;
+	
+	#canvasOne{
+		position:absolute;
+		top:40px;
+		left:40px;
+		z-index:0;
 	}
+	
+	#canvasTwo{
+		position:absolute;
+		top:40px;
+		left:40px;
+		z-index:1;
+	}
+	
 	
 </style>
 
 </head>
 <body>
-	<div>
-		<div id='col'>
-			<canvas id='canvasTwo' width='400' height='300'></canvas>
-			
-		</div>
-		
-		<div id='divCanvas'>	
-			<canvas id='canvasOne' width='500' height='300'>
+	
+	<div id='divCanvas'>
+		<canvas id='canvasTwo' width='500' height='300'>
+				Your Browser does not support HTML5 canvas.
+			</canvas>
+		<canvas id='canvasOne' width='500' height='300'>
 				Your browser does not support HTML5 Canvas.
 			</canvas>
-	
-	 	</div>
+				
 	</div>
+
 <div id='mousePos' ></div>
 </body>
 </html>

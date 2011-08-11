@@ -11,20 +11,21 @@
 		}
 	};
 	function eventWindowLoaded(){
+	
+		document.getElementById('canvasTwo').onmouseover= mouseOver;
+		document.getElementById('canvasTwo').onmouseout= mouseOut;
 		canvasApp();
-		document.getElementById('divCanvas').onmouseover= mouseOver;
-		document.getElementById('divCanvas').onmouseout= mouseOut;
 
 		
 
 	}
 	function mouseOver(ev){
-		MOUSE.setSmallXHairCursor('divCanvas');
-		document.getElementById('divCanvas').onmousemove = mouseMove;
+		MOUSE.setSmallXHairCursor('canvasTwo');
+		document.getElementById('canvasTwo').onmousemove = mouseMove;
 	};
 	function mouseOut(ev){
-		MOUSE.setDefaultCursor('divCanvas');
-		document.getElementById('divCanvas').onmousemove = null;
+		MOUSE.setDefaultCursor('canvasTwo');
+		document.getElementById('canvasTwo').onmousemove = null;
 	
 	};
 	
@@ -36,6 +37,51 @@
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
+		// try to create a large cursor composed of two lines, ie(mousePos.x,0),(mousePos.x,maxY)
+		//setup?
+		
+		var drawn=0;
+		//var lastImg= new Image();
+		//setup canvas
+		var theCanvas=document.getElementById('canvasTwo');
+		var context=theCanvas.getContext('2d');
+		context.globalAlpha=1;
+		context.clearRect(0,0,500,300);
+
+
+		//if(!drawn){
+		//lastImg.src=theCanvas.toDataURL('image/png');
+		//drawn=1;
+		//}
+		
+		Debugger.log('drawlastImg');
+		//lastImg.onload=function(){
+		//	context.drawImage(lastImg,0,0);
+		//};
+		Debugger.log('drawingLineforMouse');
+		//context.save();
+		context.strokeStyle='black';
+		context.lineWidth=2;
+			context.beginPath();
+			
+			
+				context.moveTo(10,mousePos.y);
+				context.lineTo(500,mousePos.y);
+				context.stroke();
+
+				context.closePath();
+		
+			context.beginPath();
+				
+				context.moveTo(mousePos.x,0);
+				context.lineTo(mousePos.x,300);
+				
+				context.stroke();
+
+				
+			context.closePath();
+
+		
 	}
 	function mouseCoords(ev){
 	
@@ -57,6 +103,7 @@
 			Debugger.log('DrawingRects');
 			context.fillStyle = '#ffffaa';
 			context.fillRect(0,0,500,300);
+			context.globalAlpha=1.0;
 			//text
 			context.fillStyle='#000000';
 			context.font-'20px _sans';
@@ -82,6 +129,12 @@
 			context.arc(200,200,60,(Math.PI/180)*0,(Math.PI/180)*360,false);
 			context.stroke();
 			context.closePath();
+			//draw horiz line
+			context.beginPath();
+			context.moveTo(250,150);
+			context.lineTo(250,300);
+			context.stroke();
+			context.closePath();
 			
 			
 		}
@@ -103,6 +156,7 @@
 			document.getElementById(id).setAttribute('style', 'cursor:crosshair');
 			return;
 		};
+		
 		return my;
 		
 	}());
