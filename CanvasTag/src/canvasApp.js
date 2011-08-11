@@ -11,6 +11,7 @@
 			return;
 		}
 	};
+	
 	//cursor types enums
 	var CursorType = {'holes':1,'rings':2};
 	var Mode = {'insert':1,'delete':2};
@@ -45,7 +46,7 @@
 		document.getElementById(LayersName.cursorLayer).onmouseout= mouseOut;
 		document.getElementById('layer').onmouseup= layerClick;
 		document.getElementById('mode').onmouseup= modeClick;
-
+		
 		canvasApp();
 	}
 	function modeClick(){
@@ -63,37 +64,61 @@
 	function layerClick(){
 		Debugger.log('LayerClick');
 		value=document.getElementById('layer').getAttribute('value');
-		if (value == 'rings'){
-			document.getElementById('layer').setAttribute('value', 'holes');
+		if (value == 'ringsLayer'){
+			document.getElementById('layer').setAttribute('value', 'holesLayer');
 			document.getElementById('layer').innerHTML='BulletHoles';
 		}
 		else{
-			document.getElementById('layer').setAttribute('value', 'rings');
+			document.getElementById('layer').setAttribute('value', 'ringsLayer');
 			document.getElementById('layer').innerHTML='ScoringRings';
 		}
 	}
-
-	function mouseOver(ev){
-		var activeLayer='layer1';
-		//setup canvas
-		var theCanvas=document.getElementById(LayersName.cursorLayer);
-		var context=theCanvas.getContext('2d');
+	function getCursorType(){
 		var layer= document.getElementById('layer').getAttribute('value');
-		var cursorType;
-		if(layer == 'holes'){
-			cursorType=CursorType.holes;
+		if(layer == 'holesLayer'){
+			return CursorType.holes;
 		}
 		else{
-			cursorType=CursorType.rings;
+			return CursorType.rings;
 		}
+		
+	}
+	function getActiveLayer(){
+		return document.getElementById('layer').getAttribute('value');
+	}
+	function getActiveMode(){
+		return document.getElementById('mode').getAttribute('value');
+	}
+
+	function mouseOver(ev){
+		var activeLayer= getActiveLayer();
+		var activeMode= getActiveMode();
+		Debugger.log('ActiveLayer:'+activeLayer);
+		Debugger.log('ActiveMode:'+activeMode);
+		Debugger.log('ActiveName:'+LayersName[activeLayer]);
+		//bozo
+		//activeLayer='layer1';
+
+		//setup Active layer canvas
+		var activeCanvas=document.getElementById(LayersName[activeLayer]);
+		var activeContext=activeCanvas.getContext('2d');
+		
+		//setup Cursor canvas
+		var cursorCanvas=document.getElementById(LayersName.cursorLayer);
+		var cursorContext=cursorCanvas.getContext('2d');
+		
+		var cursorType= getCursorType();
+		
 		//MOUSE.setSmallXHairCursor('layer1');
 		MOUSE.setHiddenCursor(LayersName.cursorLayer);
-		document.getElementById(LayersName.cursorLayer).addEventListener('mousemove',function(ev){mouseMove(context,cursorType,ev)},false);
+		document.getElementById(LayersName.cursorLayer).addEventListener('mousemove',function(ev){mouseMove(cursorContext,cursorType,ev)},false);
 
 		//document.getElementById('layer1').onmousemove = mouseMove;
-		document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
+		//document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
+		document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(ev){mouseDown(activeContext,activeLayer,activeMode,ev)},false);
 
-		document.getElementById('mode').innerHTML= 'InsertMode';
+
+		//document.getElementById('mode').innerHTML= 'InsertMode';
 
 	}
 	
@@ -102,12 +127,34 @@
 		document.getElementById(LayersName.cursorLayer).onmousemove = null;
 	
 	}
-	function mouseDown(ev){
+	function mouseDown(context,activeLayer,activeMode,ev){
+		Debugger.log('MouseDown');
+		Debugger.log('ModePassed:'+Mode[activeMode]);
+		Debugger.log('ModeCompare:'+Mode.insert);
+		Debugger.log('LayerPassed:'+LayersName[activeLayer]);
+		Debugger.log('LayerCompare:'+LayersName.holesLayer);
 		ev=ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('capturedClick').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
-		//drawHole();
-
+		if((Mode[activeMode] == Mode.insert) && (LayersName[activeLayer] == LayersName.holesLayer)){
+			drawHole(context,mousePos.x,mousePos.y);
+		}
+	}
+	function drawHole(context,x,y){
+		var offset=50;
+		var radius=10;
+		context.strokeStyle='red';
+		context.fillStyle='silver';
+		context.lineWidth=1;
+		context.beginPath();
+			context.arc(x-offset,y-offset,radius,(Math.PI/180)*0,(Math.PI/180)*360,false);
+			context.stroke();
+			context.fill();
+		context.closePath();
+			
+	}
+	function drawRing(context,x,y){
+		
 	}
 	
 	function canvasSupport(){
@@ -115,7 +162,7 @@
 	}
 
 	function mouseMove(context,cursorType,ev){
-		Debugger.log('MouseMove');
+		//Debugger.log('MouseMove');
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
