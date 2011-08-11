@@ -13,6 +13,7 @@
 	};
 	//cursor types enums
 	var CursorType = {'holes':1,'rings':2};
+	var Mode = {'insert':1,'delete':2};
 	//Object.freeze(CursorType);
 	
 	function eventWindowLoaded(){
@@ -20,7 +21,21 @@
 		document.getElementById('layer1').onmouseover= mouseOver;
 		document.getElementById('layer1').onmouseout= mouseOut;
 		document.getElementById('layer').onmouseup= layerClick;
+		document.getElementById('mode').onmouseup= modeClick;
+
 		canvasApp();
+	}
+	function modeClick(){
+		Debugger.log('ModeClick');
+		value=document.getElementById('mode').getAttribute('value');
+		if (value =='insert'){
+			document.getElementById('mode').setAttribute('value','delete');
+			document.getElementById('mode').innerHTML='DeleteMode';
+		}
+		else{
+			document.getElementById('mode').setAttribute('value','insert');
+			document.getElementById('mode').innerHTML='InsertMode';
+		}
 	}
 	function layerClick(){
 		Debugger.log('LayerClick');
