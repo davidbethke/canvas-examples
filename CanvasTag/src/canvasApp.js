@@ -19,17 +19,18 @@
 	
 		document.getElementById('layer1').onmouseover= mouseOver;
 		document.getElementById('layer1').onmouseout= mouseOut;
-		document.getElementById('layer').onclick= layerClick;
+		document.getElementById('layer').onmouseup= layerClick;
 		canvasApp();
 	}
 	function layerClick(){
-		value=document.getElementById('layer').value;
+		Debugger.log('LayerClick');
+		value=document.getElementById('layer').getAttribute('value');
 		if (value == 'rings'){
-			document.getElementById('layer').value='holes';
+			document.getElementById('layer').setAttribute('value', 'holes');
 			document.getElementById('layer').innerHTML='BulletHoles';
 		}
 		else{
-			document.getElementById('layer').value='rings';
+			document.getElementById('layer').setAttribute('value', 'rings');
 			document.getElementById('layer').innerHTML='ScoringRings';
 		}
 	}
@@ -39,7 +40,7 @@
 		//setup canvas
 		var theCanvas=document.getElementById('layer1');
 		var context=theCanvas.getContext('2d');
-		var layer= document.getElementById('layer').value;
+		var layer= document.getElementById('layer').getAttribute('value');
 		var cursorType;
 		if(layer == 'holes'){
 			cursorType=CursorType.holes;
@@ -54,7 +55,6 @@
 		//document.getElementById('layer1').onmousemove = mouseMove;
 		document.getElementById('layer1').onmousedown = mouseDown;
 
-		document.getElementById('layer').innerHTML= 'ScoringRings';
 		document.getElementById('mode').innerHTML= 'InsertMode';
 
 	}
@@ -77,7 +77,7 @@
 	}
 
 	function mouseMove(context,cursorType,ev){
-		Debugger.log('MouseMove');
+		//Debugger.log('MouseMove');
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
