@@ -5,44 +5,16 @@
 <title>First Page</title>
 <script src="../other/modernizr-2.0.6.js"></script>
 <script src="../src/canvasApp.js"></script>
-<style type='text/css'>
-	#mousePos{
-		background-color:yellow;
-		
-	}
-	body{
-		background-color:lightblue;
-	}
-	div{
-		background-color:green;
-		position:relative;
-	}
-	
-	#canvasOne{
-		position:absolute;
-		top:40px;
-		left:40px;
-		z-index:0;
-	}
-	
-	#canvasTwo{
-		position:absolute;
-		top:40px;
-		left:40px;
-		z-index:1;
-	}
-	
-	
-</style>
+<link rel="stylesheet" type="text/css" href="../other/style.css">
 
 </head>
 <body>
 	
 	<div id='divCanvas'>
-		<canvas id='canvasTwo' width='500' height='300'>
+		<canvas id='layer1' width='500' height='300'>
 				Your Browser does not support HTML5 canvas.
 			</canvas>
-		<canvas id='canvasOne' width='500' height='300'>
+		<canvas id='layer0' width='500' height='300'>
 				Your browser does not support HTML5 Canvas.
 			</canvas>
 				

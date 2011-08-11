@@ -1,0 +1,25 @@
+#mousePos{
+		background-color:yellow;
+		
+	}
+	body{
+		background-color:lightblue;
+	}
+	div{
+		background-color:green;
+		position:relative;
+	}
+	
+	#layer0{
+		position:absolute;
+		top:40px;
+		left:40px;
+		z-index:0;
+	}
+	
+	#layer1{
+		position:absolute;
+		top:40px;
+		left:40px;
+		z-index:1;
+	}

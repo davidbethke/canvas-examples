@@ -12,20 +12,20 @@
 	};
 	function eventWindowLoaded(){
 	
-		document.getElementById('canvasTwo').onmouseover= mouseOver;
-		document.getElementById('canvasTwo').onmouseout= mouseOut;
+		document.getElementById('layer1').onmouseover= mouseOver;
+		document.getElementById('layer1').onmouseout= mouseOut;
 		canvasApp();
 
 		
 
 	}
 	function mouseOver(ev){
-		MOUSE.setSmallXHairCursor('canvasTwo');
-		document.getElementById('canvasTwo').onmousemove = mouseMove;
+		MOUSE.setSmallXHairCursor('layer1');
+		document.getElementById('layer1').onmousemove = mouseMove;
 	};
 	function mouseOut(ev){
-		MOUSE.setDefaultCursor('canvasTwo');
-		document.getElementById('canvasTwo').onmousemove = null;
+		MOUSE.setDefaultCursor('layer1');
+		document.getElementById('layer1').onmousemove = null;
 	
 	};
 	
@@ -43,11 +43,11 @@
 		var drawn=0;
 		//var lastImg= new Image();
 		//setup canvas
-		var theCanvas=document.getElementById('canvasTwo');
+		var theCanvas=document.getElementById('layer1');
 		var context=theCanvas.getContext('2d');
 		context.globalAlpha=1;
 		context.clearRect(0,0,500,300);
-
+		MOUSEcustom.setLargeXHairCursor(context,mousePos.x,mousePos.y,500,300);
 
 		//if(!drawn){
 		//lastImg.src=theCanvas.toDataURL('image/png');
@@ -58,6 +58,7 @@
 		//lastImg.onload=function(){
 		//	context.drawImage(lastImg,0,0);
 		//};
+		/*
 		Debugger.log('drawingLineforMouse');
 		//context.save();
 		context.strokeStyle='black';
@@ -65,23 +66,23 @@
 			context.beginPath();
 			
 			
-				context.moveTo(10,mousePos.y);
-				context.lineTo(500,mousePos.y);
+				context.moveTo(10,mousePos.y-50);
+				context.lineTo(500,mousePos.y-50);
 				context.stroke();
 
 				context.closePath();
 		
 			context.beginPath();
 				
-				context.moveTo(mousePos.x,0);
-				context.lineTo(mousePos.x,300);
+				context.moveTo(mousePos.x-50,0);
+				context.lineTo(mousePos.x-50,300);
 				
 				context.stroke();
 
 				
 			context.closePath();
 
-		
+		*/
 	}
 	function mouseCoords(ev){
 	
@@ -95,7 +96,7 @@
 			return;
 		}
 		
-		var theCanvas=document.getElementById('canvasOne');
+		var theCanvas=document.getElementById('layer0');
 		var context=theCanvas.getContext('2d');
 		Debugger.log('DrawingCanvas');
 		function drawScreen(){
@@ -160,3 +161,26 @@
 		return my;
 		
 	}());
+	var MOUSEcustom =(function(context,x,y,xMax,yMax){
+		var my={};
+		my.setLargeXHairCursor=function(context,x,y,xMax,yMax){
+			Debugger.log('drawingLineforMouse');
+			//context.save();
+			context.strokeStyle='gray';
+			context.lineWidth=2;
+				context.beginPath();
+					context.moveTo(10,y-50);
+					context.lineTo(xMax,y-50);
+					context.stroke();
+				context.closePath();
+			
+				context.beginPath();
+					context.moveTo(x-50,0);
+					context.lineTo(x-50,yMax);
+					context.stroke();
+				context.closePath();
+				return;
+		};
+		return my;
+	}());
+		
