@@ -14,12 +14,35 @@
 	//cursor types enums
 	var CursorType = {'holes':1,'rings':2};
 	var Mode = {'insert':1,'delete':2};
+	var LayersNumber={0:'layer0',1:'layer1',2:'layer2',3:'layer3'};
+	var LayersName={'imageLayer':LayersNumber[0],'ringsLayer':LayersNumber[1],'holesLayer':LayersNumber[2],'cursorLayer':LayersNumber[3]};
+	
+	var dimension=function(){
+		var startx;
+		var starty;
+		var width;
+		var height;
+	};
+	
+	// Try to make a layer object, should contain name, dimensions, 
 	//Object.freeze(CursorType);
+	var Layer= function(){
+		var name;
+		var size = new dimension();
+		var myObjects= new Array();
+		this.getName=function(){ return this.name;};
+		this.setName=function(name){this.name=name;};
+		this.setSize=function(size){this.size=size;};
+		this.getNumberOfObjects=function(){return myObjects.length;};
+		this.addObject=function(someObj){myObject.push(someObj);};
+		this.getObjects=function(){return myObjects;};
+		
+	}();
 	
 	function eventWindowLoaded(){
 	
-		document.getElementById('layer1').onmouseover= mouseOver;
-		document.getElementById('layer1').onmouseout= mouseOut;
+		document.getElementById(LayersName.cursorLayer).onmouseover= mouseOver;
+		document.getElementById(LayersName.cursorLayer).onmouseout= mouseOut;
 		document.getElementById('layer').onmouseup= layerClick;
 		document.getElementById('mode').onmouseup= modeClick;
 
@@ -53,7 +76,7 @@
 	function mouseOver(ev){
 		var activeLayer='layer1';
 		//setup canvas
-		var theCanvas=document.getElementById('layer1');
+		var theCanvas=document.getElementById(LayersName.cursorLayer);
 		var context=theCanvas.getContext('2d');
 		var layer= document.getElementById('layer').getAttribute('value');
 		var cursorType;
@@ -64,19 +87,19 @@
 			cursorType=CursorType.rings;
 		}
 		//MOUSE.setSmallXHairCursor('layer1');
-		MOUSE.setHiddenCursor('layer1');
-		document.getElementById('layer1').addEventListener('mousemove',function(ev){mouseMove(context,cursorType,ev)},false);
+		MOUSE.setHiddenCursor(LayersName.cursorLayer);
+		document.getElementById(LayersName.cursorLayer).addEventListener('mousemove',function(ev){mouseMove(context,cursorType,ev)},false);
 
 		//document.getElementById('layer1').onmousemove = mouseMove;
-		document.getElementById('layer1').onmousedown = mouseDown;
+		document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
 
 		document.getElementById('mode').innerHTML= 'InsertMode';
 
 	}
 	
 	function mouseOut(ev){
-		MOUSE.setDefaultCursor('layer1');
-		document.getElementById('layer1').onmousemove = null;
+		MOUSE.setDefaultCursor(LayersName.cursorLayer);
+		document.getElementById(LayersName.cursorLayer).onmousemove = null;
 	
 	}
 	function mouseDown(ev){
@@ -92,7 +115,7 @@
 	}
 
 	function mouseMove(context,cursorType,ev){
-		//Debugger.log('MouseMove');
+		Debugger.log('MouseMove');
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
@@ -123,12 +146,12 @@
 			return;
 		}
 		
-		var theCanvas=document.getElementById('layer0');
+		var theCanvas=document.getElementById(LayersName.imageLayer);
 		var context=theCanvas.getContext('2d');
 		Debugger.log('DrawingCanvas');
 		function drawScreen(){
 			//background
-			Debugger.log('DrawingRects');
+			//Debugger.log('DrawingRects');
 			
 			//image
 			var helloWorldImage = new Image();
@@ -168,7 +191,7 @@
 	var MOUSEcustom =(function(context,x,y,xMax,yMax){
 		var my={};
 		my.setRingCursor=function(context,x,y,xMax,yMax){
-			Debugger.log('drawingLineforMouse');
+			//Debugger.log('drawingLineforMouse');
 			//context.save();
 			context.strokeStyle='gray';
 			context.lineWidth=2;
