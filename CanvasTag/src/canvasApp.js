@@ -12,7 +12,7 @@
 		}
 	};
 	
-	//cursor types enums
+	//Pseudo ENUMS
 	var CursorType = {'holes':1,'rings':2};
 	var Mode = {'insert':1,'delete':2};
 	var LayersNumber={0:'layer0',1:'layer1',2:'layer2',3:'layer3'};
@@ -25,8 +25,10 @@
 		var height;
 	};
 	
-	// Try to make a layer object, should contain name, dimensions, 
+	//BOZO freeze don't work
 	//Object.freeze(CursorType);
+	
+	// Try to make a layer object, should contain name, dimensions, 
 	var Layer= function(){
 		var name;
 		var size = new dimension();
@@ -49,6 +51,8 @@
 		
 		canvasApp();
 	}
+	
+	//helper functions for nicer looking code?
 	function modeClick(){
 		Debugger.log('ModeClick');
 		value=document.getElementById('mode').getAttribute('value');
@@ -90,15 +94,14 @@
 		return document.getElementById('mode').getAttribute('value');
 	}
 
+		// this is where most of the action happens
 	function mouseOver(ev){
 		var activeLayer= getActiveLayer();
 		var activeMode= getActiveMode();
 		Debugger.log('ActiveLayer:'+activeLayer);
 		Debugger.log('ActiveMode:'+activeMode);
 		Debugger.log('ActiveName:'+LayersName[activeLayer]);
-		//bozo
-		//activeLayer='layer1';
-
+		
 		//setup Active layer canvas
 		var activeCanvas=document.getElementById(LayersName[activeLayer]);
 		var activeContext=activeCanvas.getContext('2d');
@@ -115,7 +118,7 @@
 
 		//document.getElementById('layer1').onmousemove = mouseMove;
 		//document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
-		document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(ev){mouseDown(activeContext,activeLayer,activeMode,ev)},false);
+		document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(activeContext,activeLayer,activeMode,ev){return mouseDown(activeContext,activeLayer,activeMode,ev)}(activeContext,activeLayer,activeMode,ev),false);
 
 
 		//document.getElementById('mode').innerHTML= 'InsertMode';
@@ -136,8 +139,11 @@
 		ev=ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('capturedClick').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
-		if((Mode[activeMode] == Mode.insert) && (LayersName[activeLayer] == LayersName.holesLayer)){
-			drawHole(context,mousePos.x,mousePos.y);
+		if(Mode[activeMode] == Mode['insert']) {
+			Debugger.log('compareModePassed');
+			if (LayersName[activeLayer] == LayersName.holesLayer){
+				drawHole(context,mousePos.x,mousePos.y);
+			}
 		}
 	}
 	function drawHole(context,x,y){
@@ -166,13 +172,10 @@
 		ev = ev || window.event;
 		var mousePos=mouseCoords(ev);
 		document.getElementById('mousePos').innerHTML= 'x:'+mousePos.x+'y:'+mousePos.y;
-		//var context= this.context;
-		//setup canvas
-		//var theCanvas=document.getElementById('layer1');
-		//var context=theCanvas.getContext('2d');
 		
 		context.globalAlpha=1;
 		context.clearRect(0,0,500,300);
+		
 		if(cursorType == CursorType.holes){
 			//MOUSEcustom.setRingCursor(context,mousePos.x,mousePos.y,500,300);
 			MOUSEcustom.setHoleCursor(context,mousePos.x,mousePos.y,500,300);
@@ -187,6 +190,7 @@
 		return {x:ev.pageX, y:ev.pageY};
 	}
 	
+	 //loads target image
 	function canvasApp(){
 
 		if(!canvasSupport()){
@@ -213,6 +217,7 @@
 		drawScreen();
 	}
 
+	// Some mouse modules?
 	// Try to set the mouse style for the id passed, css style set
 	var MOUSE= (function(id){
 		var my={};
