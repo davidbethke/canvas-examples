@@ -1,4 +1,4 @@
-	
+//apple	
 
 	window.addEventListener('load', eventWindowLoaded,false);
 	//log events
