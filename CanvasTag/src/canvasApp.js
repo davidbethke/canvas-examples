@@ -93,6 +93,12 @@
 	function getActiveMode(){
 		return document.getElementById('mode').getAttribute('value');
 	}
+	function isCenterSet(){
+		return document.getElementById('center').getAttribute('set');
+	}
+	function getRingCenter(){
+		return document.getElementById('center').innerHTML;
+	}
 
 		// this is where most of the action happens
 	function mouseOver(ev){
@@ -145,6 +151,14 @@
 				drawHole(context,mousePos.x,mousePos.y);
 			}
 		}
+		/*
+		if(isCenterSet()){
+			var center= getRingCenter();
+		}
+		else{
+			center={x:x,y:y};
+		}
+		*/
 	}
 	function drawHole(context,x,y){
 		var offset=50;
@@ -160,7 +174,16 @@
 			
 	}
 	function drawRing(context,x,y){
+		var offset=50;
+		var radius=Math.SQRT2(Math.S)
+		context.strokeStyle='yellow';
 		
+		context.lineWidth=2;
+		context.beginPath();
+			context.arc(x-offset,y-offset,radius,(Math.PI/180)*0,(Math.PI/180)*360,false);
+			context.stroke();
+		context.closePath();
+				
 	}
 	
 	function canvasSupport(){
