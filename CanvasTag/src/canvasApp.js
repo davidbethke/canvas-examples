@@ -1,4 +1,4 @@
-	
+//from linux	
 
 	window.addEventListener('load', eventWindowLoaded,false);
 	//log events
@@ -24,6 +24,8 @@
 		var width;
 		var height;
 	};
+	var coords= {x:0,y:0};
+	
 	
 	//BOZO freeze don't work
 	//Object.freeze(CursorType);
