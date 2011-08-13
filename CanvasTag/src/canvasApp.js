@@ -123,8 +123,8 @@
 		document.getElementById(LayersName.cursorLayer).addEventListener('mousemove',function(ev){mouseMove(cursorContext,cursorType,ev)},false);
 
 		//document.getElementById('layer1').onmousemove = mouseMove;
-		document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
-		//document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(activeContext,activeLayer,activeMode,ev){return mouseDown(activeContext,activeLayer,activeMode,ev)}(activeContext,activeLayer,activeMode,ev),false);
+		//document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
+		document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(ev){ mouseDown(activeContext,activeLayer,activeMode,ev)},false);
 
 
 		//document.getElementById('mode').innerHTML= 'InsertMode';
