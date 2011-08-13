@@ -1,4 +1,8 @@
+
 //apple	
+
+//from linux	
+
 
 	window.addEventListener('load', eventWindowLoaded,false);
 	//log events
@@ -24,6 +28,8 @@
 		var width;
 		var height;
 	};
+	var coords= {x:0,y:0};
+	
 	
 	//BOZO freeze don't work
 	//Object.freeze(CursorType);
@@ -124,7 +130,7 @@
 
 		//document.getElementById('layer1').onmousemove = mouseMove;
 		//document.getElementById(LayersName.cursorLayer).onmousedown = mouseDown;
-		document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(activeContext,activeLayer,activeMode,ev){return mouseDown(activeContext,activeLayer,activeMode,ev)}(activeContext,activeLayer,activeMode,ev),false);
+		document.getElementById(LayersName.cursorLayer).addEventListener('mousedown',function(ev){ mouseDown(activeContext,activeLayer,activeMode,ev)},false);
 
 
 		//document.getElementById('mode').innerHTML= 'InsertMode';
